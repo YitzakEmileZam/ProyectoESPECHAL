@@ -1,0 +1,39 @@
+@model Pg1.Models.Cliente
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<h2>Registro de Cliente</h2>
+
+<form asp-action="Registrar" method="post">
+    <label>Nombre:</label>
+    <input asp-for="Nombre" class="form-control" required/>
+
+    <label>Apellido:</label>
+    <input asp-for="Apellido" class="form-control" required/>
+
+    <label>Email:</label>
+    <input asp-for="Email" type="email" class="form-control" required/>
+
+    <label>Teléfono:</label>
+    <input asp-for="Telefono" type="number" class="form-control" required/>
+    <span asp-validation-for="Telefono" class="text-danger"></span>
+
+    <label>Dirección:</label>
+    <input asp-for="Direccion" class="form-control" required/>
+
+    <label>Contraseña:</label>
+    <input asp-for="Password" type="password" class="form-control" required/>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Registrarse</button>
+</form>
+
+@if (ViewBag.Mensaje != null)
+{
+    <div class="alert alert-info mt-3">@ViewBag.Mensaje</div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
