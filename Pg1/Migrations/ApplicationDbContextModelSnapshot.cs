@@ -17,7 +17,7 @@ namespace Pg1.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -36,7 +36,8 @@ namespace Pg1.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("IdCategoria");
 
@@ -68,7 +69,8 @@ namespace Pg1.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -100,14 +102,11 @@ namespace Pg1.Migrations
                     b.Property<int>("IdProducto")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("PedidoIdPedido")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("PrecioUnitario")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Subtotal")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdDetalle");
 
@@ -115,9 +114,7 @@ namespace Pg1.Migrations
 
                     b.HasIndex("IdProducto");
 
-                    b.HasIndex("PedidoIdPedido");
-
-                    b.ToTable("DetallesPedido");
+                    b.ToTable("DetallesPedido", (string)null);
                 });
 
             modelBuilder.Entity("Pg1.Models.Pago", b =>
@@ -145,7 +142,7 @@ namespace Pg1.Migrations
                     b.Property<decimal>("Monto")
                         .HasColumnType("numeric");
 
-                    b.Property<int?>("PedidoIdPedido")
+                    b.Property<int>("PedidoIdPedido")
                         .HasColumnType("integer");
 
                     b.HasKey("IdPago");
@@ -154,7 +151,7 @@ namespace Pg1.Migrations
 
                     b.HasIndex("PedidoIdPedido");
 
-                    b.ToTable("Pagos");
+                    b.ToTable("Pagos", (string)null);
                 });
 
             modelBuilder.Entity("Pg1.Models.Pedido", b =>
@@ -165,25 +162,25 @@ namespace Pg1.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdPedido"));
 
-                    b.Property<int?>("ClienteIdCliente")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Estado")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasDefaultValue("Pendiente");
 
                     b.Property<DateTime>("FechaPedido")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdPedido");
-
-                    b.HasIndex("ClienteIdCliente");
 
                     b.HasIndex("IdCliente");
 
@@ -198,9 +195,6 @@ namespace Pg1.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdProducto"));
 
-                    b.Property<int?>("CategoriaIdCategoria")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("text");
@@ -214,17 +208,16 @@ namespace Pg1.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<decimal>("Precio")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
 
                     b.HasKey("IdProducto");
-
-                    b.HasIndex("CategoriaIdCategoria");
 
                     b.HasIndex("IdCategoria");
 
@@ -234,7 +227,7 @@ namespace Pg1.Migrations
             modelBuilder.Entity("Pg1.Models.DetallePedido", b =>
                 {
                     b.HasOne("Pg1.Models.Pedido", "Pedido")
-                        .WithMany()
+                        .WithMany("Detalles")
                         .HasForeignKey("IdPedido")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -245,10 +238,6 @@ namespace Pg1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Pg1.Models.Pedido", null)
-                        .WithMany("Detalles")
-                        .HasForeignKey("PedidoIdPedido");
-
                     b.Navigation("Pedido");
 
                     b.Navigation("Producto");
@@ -256,29 +245,27 @@ namespace Pg1.Migrations
 
             modelBuilder.Entity("Pg1.Models.Pago", b =>
                 {
-                    b.HasOne("Pg1.Models.Pedido", "Pedido")
-                        .WithMany()
+                    b.HasOne("Pg1.Models.Pedido", null)
+                        .WithMany("Pagos")
                         .HasForeignKey("IdPedido")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Pg1.Models.Pedido", null)
-                        .WithMany("Pagos")
-                        .HasForeignKey("PedidoIdPedido");
+                    b.HasOne("Pg1.Models.Pedido", "Pedido")
+                        .WithMany()
+                        .HasForeignKey("PedidoIdPedido")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Pedido");
                 });
 
             modelBuilder.Entity("Pg1.Models.Pedido", b =>
                 {
-                    b.HasOne("Pg1.Models.Cliente", null)
-                        .WithMany("Pedidos")
-                        .HasForeignKey("ClienteIdCliente");
-
                     b.HasOne("Pg1.Models.Cliente", "Cliente")
-                        .WithMany()
+                        .WithMany("Pedidos")
                         .HasForeignKey("IdCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cliente");
@@ -286,14 +273,10 @@ namespace Pg1.Migrations
 
             modelBuilder.Entity("Pg1.Models.Producto", b =>
                 {
-                    b.HasOne("Pg1.Models.Categoria", null)
-                        .WithMany("Productos")
-                        .HasForeignKey("CategoriaIdCategoria");
-
                     b.HasOne("Pg1.Models.Categoria", "Categoria")
-                        .WithMany()
+                        .WithMany("Productos")
                         .HasForeignKey("IdCategoria")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Categoria");
