@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Pg1.Migrations
 {
     /// <inheritdoc />
-    public partial class Initgg : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace Pg1.Migrations
                 {
                     IdCategoria = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Nombre = table.Column<string>(type: "text", nullable: false),
+                    Nombre = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Descripcion = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -32,12 +32,13 @@ namespace Pg1.Migrations
                 {
                     IdCliente = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Nombre = table.Column<string>(type: "text", nullable: false),
+                    Nombre = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Apellido = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Telefono = table.Column<string>(type: "text", nullable: false),
                     Direccion = table.Column<string>(type: "text", nullable: false),
-                    FechaRegistro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    FechaRegistro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,28 +51,22 @@ namespace Pg1.Migrations
                 {
                     IdProducto = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Nombre = table.Column<string>(type: "text", nullable: false),
+                    Nombre = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Descripcion = table.Column<string>(type: "text", nullable: false),
-                    Precio = table.Column<decimal>(type: "numeric", nullable: false),
+                    Precio = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     Stock = table.Column<int>(type: "integer", nullable: false),
                     ImagenUrl = table.Column<string>(type: "text", nullable: false),
-                    IdCategoria = table.Column<int>(type: "integer", nullable: false),
-                    CategoriaIdCategoria = table.Column<int>(type: "integer", nullable: true)
+                    IdCategoria = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Productos", x => x.IdProducto);
                     table.ForeignKey(
-                        name: "FK_Productos_Categorias_CategoriaIdCategoria",
-                        column: x => x.CategoriaIdCategoria,
-                        principalTable: "Categorias",
-                        principalColumn: "IdCategoria");
-                    table.ForeignKey(
-                        name: "FK_Productos_Categorias_IdCategoria",
+                        name: "FK_Producto_Categoria",
                         column: x => x.IdCategoria,
                         principalTable: "Categorias",
                         principalColumn: "IdCategoria",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,25 +76,19 @@ namespace Pg1.Migrations
                     IdPedido = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     IdCliente = table.Column<int>(type: "integer", nullable: false),
-                    FechaPedido = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Estado = table.Column<string>(type: "text", nullable: false),
-                    Total = table.Column<decimal>(type: "numeric", nullable: false),
-                    ClienteIdCliente = table.Column<int>(type: "integer", nullable: true)
+                    FechaPedido = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    Estado = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "Pendiente"),
+                    Total = table.Column<decimal>(type: "numeric(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pedidos", x => x.IdPedido);
                     table.ForeignKey(
-                        name: "FK_Pedidos_Clientes_ClienteIdCliente",
-                        column: x => x.ClienteIdCliente,
-                        principalTable: "Clientes",
-                        principalColumn: "IdCliente");
-                    table.ForeignKey(
-                        name: "FK_Pedidos_Clientes_IdCliente",
+                        name: "FK_Pedido_Cliente",
                         column: x => x.IdCliente,
                         principalTable: "Clientes",
                         principalColumn: "IdCliente",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,30 +100,24 @@ namespace Pg1.Migrations
                     IdPedido = table.Column<int>(type: "integer", nullable: false),
                     IdProducto = table.Column<int>(type: "integer", nullable: false),
                     Cantidad = table.Column<int>(type: "integer", nullable: false),
-                    PrecioUnitario = table.Column<decimal>(type: "numeric", nullable: false),
-                    Subtotal = table.Column<decimal>(type: "numeric", nullable: false),
-                    PedidoIdPedido = table.Column<int>(type: "integer", nullable: true)
+                    PrecioUnitario = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    Subtotal = table.Column<decimal>(type: "numeric(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DetallesPedido", x => x.IdDetalle);
                     table.ForeignKey(
-                        name: "FK_DetallesPedido_Pedidos_IdPedido",
+                        name: "FK_DetallePedido_Pedido",
                         column: x => x.IdPedido,
                         principalTable: "Pedidos",
                         principalColumn: "IdPedido",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DetallesPedido_Pedidos_PedidoIdPedido",
-                        column: x => x.PedidoIdPedido,
-                        principalTable: "Pedidos",
-                        principalColumn: "IdPedido");
-                    table.ForeignKey(
-                        name: "FK_DetallesPedido_Productos_IdProducto",
+                        name: "FK_DetallePedido_Producto",
                         column: x => x.IdProducto,
                         principalTable: "Productos",
                         principalColumn: "IdProducto",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -147,23 +130,17 @@ namespace Pg1.Migrations
                     FechaPago = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Monto = table.Column<decimal>(type: "numeric", nullable: false),
                     MetodoPago = table.Column<string>(type: "text", nullable: false),
-                    EstadoPago = table.Column<string>(type: "text", nullable: false),
-                    PedidoIdPedido = table.Column<int>(type: "integer", nullable: true)
+                    EstadoPago = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pagos", x => x.IdPago);
                     table.ForeignKey(
-                        name: "FK_Pagos_Pedidos_IdPedido",
+                        name: "FK_Pago_Pedido",
                         column: x => x.IdPedido,
                         principalTable: "Pedidos",
                         principalColumn: "IdPedido",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Pagos_Pedidos_PedidoIdPedido",
-                        column: x => x.PedidoIdPedido,
-                        principalTable: "Pedidos",
-                        principalColumn: "IdPedido");
                 });
 
             migrationBuilder.CreateIndex(
@@ -177,34 +154,14 @@ namespace Pg1.Migrations
                 column: "IdProducto");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetallesPedido_PedidoIdPedido",
-                table: "DetallesPedido",
-                column: "PedidoIdPedido");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pagos_IdPedido",
                 table: "Pagos",
                 column: "IdPedido");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pagos_PedidoIdPedido",
-                table: "Pagos",
-                column: "PedidoIdPedido");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Pedidos_ClienteIdCliente",
-                table: "Pedidos",
-                column: "ClienteIdCliente");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pedidos_IdCliente",
                 table: "Pedidos",
                 column: "IdCliente");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Productos_CategoriaIdCategoria",
-                table: "Productos",
-                column: "CategoriaIdCategoria");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Productos_IdCategoria",

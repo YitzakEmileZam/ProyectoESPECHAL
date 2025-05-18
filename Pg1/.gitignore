@@ -1,0 +1,8 @@
+# Binarios y archivos de compilación
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.json
