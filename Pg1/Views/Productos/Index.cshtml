@@ -1,0 +1,66 @@
+@model IEnumerable<Pg1.Models.Producto>
+
+@{
+    ViewData["Title"] = "Catálogo de Productos Gamer";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form asp-action="Index" method="get">
+            <div class="input-group">
+                <input type="text" name="busqueda" class="form-control" placeholder="Buscar productos..." value="@Context.Request.Query["busqueda"]"/>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar por categoría
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" asp-action="Index">Todas las categorías</a></li>
+                @foreach (var categoria in ViewBag.Categorias)
+                {
+                    <li><a class="dropdown-item" asp-action="Index" asp-route-categoria="@categoria.Nombre">@categoria.Nombre</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="@item.ImagenUrl" class="card-img-top" alt="@item.Nombre" style="height: 200px; object-fit: contain;">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Nombre</h5>
+                    <p class="card-text">@item.Descripcion</p>
+                    <p class="card-text"><strong>Categoría:</strong> @item.Categoria.Nombre</p>
+                    <p class="card-text"><strong>Precio:</strong> @item.Precio.ToString("C")</p>
+                    <p class="card-text"><strong>Stock:</strong> @item.Stock</p>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Details" asp-route-id="@item.IdProducto" class="btn btn-info">Detalles</a>
+                    @if (item.Stock > 0)
+                    {
+                        <form asp-controller="Carrito" asp-action="AgregarAlCarrito" method="post" class="d-inline">
+                            <input type="hidden" name="idProducto" value="@item.IdProducto" />
+                            <button type="submit" class="btn btn-success">Añadir al carrito</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <button class="btn btn-secondary" disabled>Sin stock</button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+    

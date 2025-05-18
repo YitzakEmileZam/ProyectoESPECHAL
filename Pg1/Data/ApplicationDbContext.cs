@@ -25,31 +25,98 @@ namespace Pg1.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Relaciones y configuraciones adicionales si las deseas.
-            modelBuilder.Entity<DetallePedido>()
-                .HasOne(p => p.Producto)
-                .WithMany()
-                .HasForeignKey(p => p.IdProducto);
-
-            modelBuilder.Entity<DetallePedido>()
-                .HasOne(p => p.Pedido)
-                .WithMany()
-                .HasForeignKey(p => p.IdPedido);
-
+            
+             // Configuración de Categoría-Producto
             modelBuilder.Entity<Producto>()
                 .HasOne(p => p.Categoria)
-                .WithMany()
-                .HasForeignKey(p => p.IdCategoria);
+                .WithMany(c => c.Productos)
+                .HasForeignKey(p => p.IdCategoria)
+                .HasConstraintName("FK_Producto_Categoria")
+                .OnDelete(DeleteBehavior.Restrict);
 
+            // Configuración de Cliente-Pedido
             modelBuilder.Entity<Pedido>()
                 .HasOne(p => p.Cliente)
-                .WithMany()
-                .HasForeignKey(p => p.IdCliente);
+                .WithMany(c => c.Pedidos)
+                .HasForeignKey(p => p.IdCliente)
+                .HasConstraintName("FK_Pedido_Cliente")
+                .OnDelete(DeleteBehavior.Restrict);
 
+            // Configuración de Pedido-DetallePedido
+            modelBuilder.Entity<DetallePedido>()
+                .HasOne(d => d.Pedido)
+                .WithMany(p => p.Detalles)
+                .HasForeignKey(d => d.IdPedido)
+                .HasConstraintName("FK_DetallePedido_Pedido")
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configuración de DetallePedido-Producto
+            modelBuilder.Entity<DetallePedido>()
+                .HasOne(d => d.Producto)
+                .WithMany()
+                .HasForeignKey(d => d.IdProducto)
+                .HasConstraintName("FK_DetallePedido_Producto")
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configuración de Pedido-Pago
             modelBuilder.Entity<Pago>()
                 .HasOne(p => p.Pedido)
-                .WithMany()
-                .HasForeignKey(p => p.IdPedido);
+                .WithMany(p => p.Pagos)
+                .HasForeignKey(p => p.IdPedido)
+                .HasConstraintName("FK_Pago_Pedido")
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            /*modelBuilder.Entity<Pedido>().Ignore(p => p.ClienteIdCliente);
+            modelBuilder.Entity<DetallePedido>().Ignore(d => d.PedidoIdPedido);
+            modelBuilder.Entity<Pago>().Ignore(p => p.PedidoIdPedido);
+            modelBuilder.Entity<Producto>().Ignore(p => p.CategoriaIdCategoria);*/
+
+            modelBuilder.Entity<DetallePedido>().ToTable("DetallesPedido");
+            modelBuilder.Entity<Pago>().ToTable("Pagos");     
+
+            modelBuilder.Entity<Producto>()
+                .Property(p => p.Nombre)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Producto>()
+                .Property(p => p.Precio)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Categoria>()
+                .Property(c => c.Nombre)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            modelBuilder.Entity<Cliente>()
+                .Property(c => c.Nombre)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Pedido>()
+                .Property(p => p.Estado)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            modelBuilder.Entity<Pedido>()
+                .Property(p => p.Total)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<DetallePedido>()
+                .Property(d => d.PrecioUnitario)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<DetallePedido>()
+                .Property(d => d.Subtotal)
+                .HasColumnType("decimal(18,2)");
+            
+            modelBuilder.Entity<Pedido>()
+                .Property(p => p.FechaPedido)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            modelBuilder.Entity<Pedido>()
+                .Property(p => p.Estado)
+                .HasDefaultValue("Pendiente");
         }
     }
 }
