@@ -1,10 +1,6 @@
 {
   "Version": 1,
-<<<<<<< HEAD
-  "Hash": "hXSznpMNUglQhSf6SHcLFLwuMcaX21ayd+ACX2YAESE=",
-=======
-  "Hash": "GWQNeBWNoWrFAkdNz2PqT9VZldk7CgQiEocAC3LfgxU=",
->>>>>>> 1ac2e9a0550976e1faf56e702d32dcea610a68cf
+  "Hash": "XzokRji/py6WigAdHiWAHlFjCKiFLkroKM1zZw63QiY=",
   "Source": "Pg1",
   "BasePath": "_content/Pg1",
   "Mode": "Default",
@@ -97,13 +93,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-<<<<<<< HEAD
-      "Identity": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\js\\site.js",
-=======
-      "Identity": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\monitor1.jpg",
+      "Identity": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\monitor1.jpg",
       "SourceId": "Pg1",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\",
       "BasePath": "_content/Pg1",
       "RelativePath": "img/monitor1.jpg",
       "AssetKind": "All",
@@ -119,10 +112,10 @@
       "OriginalItemSpec": "wwwroot\\img\\monitor1.jpg"
     },
     {
-      "Identity": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\Silla.jpg",
+      "Identity": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\Silla.jpg",
       "SourceId": "Pg1",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\",
       "BasePath": "_content/Pg1",
       "RelativePath": "img/Silla.jpg",
       "AssetKind": "All",
@@ -138,10 +131,10 @@
       "OriginalItemSpec": "wwwroot\\img\\Silla.jpg"
     },
     {
-      "Identity": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\Silla2.jpg",
+      "Identity": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\Silla2.jpg",
       "SourceId": "Pg1",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\",
       "BasePath": "_content/Pg1",
       "RelativePath": "img/Silla2.jpg",
       "AssetKind": "All",
@@ -157,10 +150,10 @@
       "OriginalItemSpec": "wwwroot\\img\\Silla2.jpg"
     },
     {
-      "Identity": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\sofaGamer.png",
+      "Identity": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\sofaGamer.png",
       "SourceId": "Pg1",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\",
       "BasePath": "_content/Pg1",
       "RelativePath": "img/sofaGamer.png",
       "AssetKind": "All",
@@ -176,8 +169,7 @@
       "OriginalItemSpec": "wwwroot\\img\\sofaGamer.png"
     },
     {
-      "Identity": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\js\\site.js",
->>>>>>> 1ac2e9a0550976e1faf56e702d32dcea610a68cf
+      "Identity": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\js\\site.js",
       "SourceId": "Pg1",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\",
