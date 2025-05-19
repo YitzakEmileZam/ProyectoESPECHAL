@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Pago Exitoso";
+}
+
+<h2>¡Gracias por tu compra!</h2>
+
+@if (ViewBag.OrderId != null)
+{
+    <div class="alert alert-success">
+        Tu pago fue procesado correctamente.<br />
+        <strong>ID de la orden PayPal:</strong> @ViewBag.OrderId
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        No se encontró información del pedido.
+    </div>
+}
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Volver al inicio</a>

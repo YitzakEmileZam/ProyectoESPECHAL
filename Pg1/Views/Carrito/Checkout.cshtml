@@ -1,0 +1,35 @@
+@model Pg1.Models.PedidoViewModel
+@{
+    ViewData["Title"] = "Checkout";
+    var total = Model.Carrito.Items.Sum(i => i.Subtotal);
+}
+
+<h2>Resumen de tu compra</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Carrito.Items)
+        {
+            <tr>
+                <td>@item.Producto.Nombre</td>
+                <td>@item.PrecioUnitario.ToString("C")</td>
+                <td>@item.Cantidad</td>
+                <td>@item.Subtotal.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Total: @total.ToString("C")</h4>
+
+<form asp-action="Checkout" method="post">
+    <button type="submit" class="btn btn-success">Proceder al Pago</button>
+</form>
