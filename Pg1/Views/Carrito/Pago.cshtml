@@ -1,0 +1,53 @@
+@model Pg1.Models.PedidoViewModel
+@{
+    ViewData["Title"] = "Pago";
+    var total = Model.Carrito.Items.Sum(i => i.Subtotal);
+}
+
+<h2>Pago con PayPal</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Carrito.Items)
+        {
+            <tr>
+                <td>@item.Producto.Nombre</td>
+                <td>@item.PrecioUnitario.ToString("C")</td>
+                <td>@item.Cantidad</td>
+                <td>@item.Subtotal.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Total: @total.ToString("C")</h4>
+
+<div id="paypal-button-container"></div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AdGyRTvYMpatd9x59ctc8o5SmW2spbFUEtZBzzpRWgkDW58MF9xXe7gtVSNolHAxY1_R474_eMUKtdPq&currency=USD"></script>
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '@total.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)'
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                window.location.href = '/Carrito/ConfirmacionPaypal?orderId=' + data.orderID;
+            });
+        }
+    }).render('#paypal-button-container');
+</script>

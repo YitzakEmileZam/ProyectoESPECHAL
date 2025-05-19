@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Pg1.Data;
 using Pg1.Models;
@@ -12,7 +9,6 @@ using Pg1.Extensions;
 
 namespace Pg1.Controllers
 {
-    /*[Route("[controller]")]*/
     public class CarritoController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -28,15 +24,8 @@ namespace Pg1.Controllers
         public IActionResult Index()
         {
             var carrito = GetCarrito();
-            return View();
+            return View(carrito);
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View("Error!");
-        }
-        
 
         [HttpPost]
         public async Task<IActionResult> AgregarAlCarrito(int idProducto, int cantidad = 1)
@@ -45,6 +34,7 @@ namespace Pg1.Controllers
 
             if (producto == null || producto.Stock < cantidad)
             {
+                _logger.LogWarning("Producto no encontrado o sin stock suficiente.");
                 return NotFound();
             }
 
@@ -69,23 +59,6 @@ namespace Pg1.Controllers
             return RedirectToAction("Index");
         }
 
-
-        [HttpPost]
-        public IActionResult ActualizarCarrito(int idProducto, int cantidad)
-        {
-            var carrito = GetCarrito();
-            var item = carrito.Items.FirstOrDefault(i => i.Producto.IdProducto == idProducto);
-
-            if (item != null)
-            {
-                item.Cantidad = cantidad;
-                SaveCarrito(carrito);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-
         [HttpPost]
         public IActionResult RemoverDelCarrito(int idProducto)
         {
@@ -101,82 +74,109 @@ namespace Pg1.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public IActionResult Checkout()
         {
             var carrito = GetCarrito();
             if (!carrito.Items.Any())
             {
+                _logger.LogWarning("El carrito está vacío.");
                 return RedirectToAction("Index");
             }
 
-            return View(new PedidoViewModel
-            {
-                Carrito = carrito
-            });
+            return View(new PedidoViewModel { Carrito = carrito });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Checkout(PedidoViewModel model)
+        [HttpPost, ActionName("Checkout")]
+        public async Task<IActionResult> CheckoutPost()
         {
             var carrito = GetCarrito();
             if (!carrito.Items.Any())
             {
+                _logger.LogWarning("El carrito está vacío al intentar hacer checkout.");
                 return RedirectToAction("Index");
             }
 
-            if (ModelState.IsValid)
+            // Crear el pedido usando el carrito, sin depender de un modelo enviado por el formulario.
+            var pedido = new Pedido
             {
-                var pedido = new Pedido
+                FechaPedido = DateTime.UtcNow,
+                Estado = "Pendiente",
+                Total = carrito.Items.Sum(i => i.Subtotal),
+                IdCliente = 1, // Temporal
+                Detalles = carrito.Items.Select(i => new DetallePedido
                 {
-                    FechaPedido = DateTime.Now,
-                    Estado = "Pendiente",
-                    Total = carrito.Items.Sum(i => i.Subtotal),
-                    // Aquí deberías asignar el cliente real (usuario autenticado)
-                    IdCliente = 1, // Temporal - reemplazar con autenticación
-                    Detalles = carrito.Items.Select(i => new DetallePedido
-                    {
-                        IdProducto = i.Producto.IdProducto,
-                        Cantidad = i.Cantidad,
-                        PrecioUnitario = i.PrecioUnitario,
-                        Subtotal = i.Subtotal
-                    }).ToList()
-                };
+                    IdProducto = i.Producto.IdProducto,
+                    Cantidad = i.Cantidad,
+                    PrecioUnitario = i.PrecioUnitario,
+                    Subtotal = i.Subtotal
+                }).ToList()
+            };
 
-                _context.Pedidos.Add(pedido);
-                
-                // Actualizar stock
-                foreach (var item in carrito.Items)
-                {
-                    var producto = await _context.Productos.FindAsync(item.Producto.IdProducto);
-                    if (producto != null)
-                    {
-                        producto.Stock -= item.Cantidad;
-                    }
-                }
+            _context.Pedidos.Add(pedido);
 
-                await _context.SaveChangesAsync();
-                HttpContext.Session.Remove(SessionKeyName);
-
-                return RedirectToAction("Confirmacion", new { idPedido = pedido.IdPedido });
+            foreach (var item in carrito.Items)
+            {
+                var producto = await _context.Productos.FindAsync(item.Producto.IdProducto);
+                if (producto != null)
+                    producto.Stock -= item.Cantidad;
             }
 
-            model.Carrito = carrito;
-            return View(model);
+            await _context.SaveChangesAsync();
+
+            HttpContext.Session.SetInt32("UltimoPedidoId", pedido.IdPedido);
+
+            _logger.LogInformation("Pedido creado con éxito. ID: {IdPedido}", pedido.IdPedido);
+
+            return RedirectToAction("Pago");
         }
 
-        public IActionResult Confirmacion(int idPedido)
+        public IActionResult Pago()
         {
-            var pedido = _context.Pedidos
-                .Include(p => p.Detalles)
-                .ThenInclude(d => d.Producto)
-                .FirstOrDefault(p => p.IdPedido == idPedido);
-
-            if (pedido == null)
+            var carrito = GetCarrito();
+            if (!carrito.Items.Any())
             {
-                return NotFound();
+                _logger.LogWarning("El carrito está vacío al intentar acceder a la página de pago.");
+                return RedirectToAction("Index");
             }
 
-            return View(pedido);
+            return View(new PedidoViewModel { Carrito = carrito });
+        }
+
+        public IActionResult ConfirmacionPaypal(string orderId)
+        {
+            var idPedido = HttpContext.Session.GetInt32("UltimoPedidoId");
+            if (idPedido == null)
+            {
+                ViewBag.Error = "No se encontró el pedido para registrar el pago.";
+                return View();
+            }
+
+            var pedido = _context.Pedidos.FirstOrDefault(p => p.IdPedido == idPedido.Value);
+            if (pedido == null)
+            {
+                ViewBag.Error = "No se encontró el pedido en la base de datos.";
+                return View();
+            }
+
+            var pago = new Pago
+            {
+                IdPedido = pedido.IdPedido,
+                FechaPago = DateTime.UtcNow,
+                Monto = pedido.Total,
+                MetodoPago = "PayPal",
+                EstadoPago = "Completado"
+            };
+            _context.Pagos.Add(pago);
+
+            pedido.Estado = "Completado";
+            _context.SaveChanges();
+
+            HttpContext.Session.Remove("_Carrito");
+            HttpContext.Session.Remove("UltimoPedidoId");
+
+            ViewBag.OrderId = orderId;
+            return View();
         }
 
         private Carrito GetCarrito()
