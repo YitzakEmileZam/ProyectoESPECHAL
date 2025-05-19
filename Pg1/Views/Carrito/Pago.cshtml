@@ -4,7 +4,7 @@
     var total = Model.Carrito.Items.Sum(i => i.Subtotal);
 }
 
-<h2>Pago con PayPal</h2>
+<h2>Confirmar Compra</h2>
 
 <table class="table">
     <thead>
@@ -29,9 +29,9 @@
 </table>
 
 <h4>Total: @total.ToString("C")</h4>
-
-<div id="paypal-button-container"></div>
-
+<br>
+<h4>Pagar con:</h4>
+<div id="paypal-button-container" class="text-center"></div>
 <script src="https://www.paypal.com/sdk/js?client-id=AdGyRTvYMpatd9x59ctc8o5SmW2spbFUEtZBzzpRWgkDW58MF9xXe7gtVSNolHAxY1_R474_eMUKtdPq&currency=USD"></script>
 <script>
     paypal.Buttons({
