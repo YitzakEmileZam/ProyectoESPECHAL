@@ -28,7 +28,7 @@ namespace Pg1.Controllers
         public IActionResult Index()
         {
             var carrito = GetCarrito();
-            return View();
+            return View(carrito);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

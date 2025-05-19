@@ -13,6 +13,22 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\Silla.jpg",
+      "PackagePath": "staticwebassets\\img\\Silla.jpg"
+    },
+    {
+      "Id": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\Silla2.jpg",
+      "PackagePath": "staticwebassets\\img\\Silla2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\monitor1.jpg",
+      "PackagePath": "staticwebassets\\img\\monitor1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\sofaGamer.png",
+      "PackagePath": "staticwebassets\\img\\sofaGamer.png"
+    },
+    {
       "Id": "C:\\Users\\USUARIO\\Downloads\\Pg1_Em\\ProyectoESPECHAL\\Pg1\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
