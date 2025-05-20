@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
       "Id": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
@@ -21,8 +25,28 @@
       "PackagePath": "staticwebassets\\img\\Silla2.jpg"
     },
     {
+      "Id": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\ar_gamer1.jpg",
+      "PackagePath": "staticwebassets\\img\\ar_gamer1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\ar_gamer2.jpg",
+      "PackagePath": "staticwebassets\\img\\ar_gamer2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\ar_gamer3.jpg",
+      "PackagePath": "staticwebassets\\img\\ar_gamer3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\ar_gamer4.jpg",
+      "PackagePath": "staticwebassets\\img\\ar_gamer4.jpg"
+    },
+    {
       "Id": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\monitor1.jpg",
       "PackagePath": "staticwebassets\\img\\monitor1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\sobrenosotrosgamer.jpg",
+      "PackagePath": "staticwebassets\\img\\sobrenosotrosgamer.jpg"
     },
     {
       "Id": "C:\\Users\\ASUS\\Documents\\Loca de Mrd\\ProyectoEspechal\\ProyectoESPECHAL\\Pg1\\wwwroot\\img\\sofaGamer.png",

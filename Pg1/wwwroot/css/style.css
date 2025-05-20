@@ -1,0 +1,90 @@
+body {
+  font-family: "Montserrat", Arial, sans-serif;
+  background: #f7fafd;
+}
+.bg-ntperu {
+  background-color: #004494 !important;
+}
+.btn-ntperu {
+  background-color: #004494;
+  color: #fff;
+  border-radius: 2rem;
+  font-weight: 600;
+}
+.btn-ntperu:hover {
+  background-color: #003366;
+  color: #fff;
+}
+.rounded-ntperu {
+  border-radius: 1.5rem !important;
+}
+.search-bar {
+  border-radius: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+.card {
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+.badge-ntperu {
+  background: #ffe600;
+  color: #222;
+  font-weight: 700;
+  border-radius: 0.5rem;
+}
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.social-float {
+  position: fixed;
+  top: 40%;
+  right: 1rem;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.social-float a {
+  background: #fff;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  color: #004494;
+  font-size: 1.3rem;
+  transition: background 0.2s, color 0.2s;
+}
+.social-float a.whatsapp {
+  color: #25d366;
+}
+.social-float a.messenger {
+  color: #0084ff;
+}
+.social-float a:hover {
+  background: #004494;
+  color: #fff;
+}
+.bg-ggstore-blue {
+  background: #4da3ff !important; /* Azul claro */
+}
+.navbar .nav-link {
+  color: #fff !important;
+  transition: background 0.2s, color 0.2s;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+.navbar .nav-link.nav-fx:active,
+.navbar .nav-link.nav-fx.active,
+.navbar .nav-link.nav-fx:focus {
+  background: #fff !important;
+  color: #4da3ff !important;
+}
+.navbar .nav-link.nav-fx:hover {
+  background: #e3f0ff !important;
+  color: #1976d2 !important;
+}

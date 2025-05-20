@@ -2,7 +2,115 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<br>
+<!-- Descripción  -->
+<div class="bg-white rounded-ntperu shadow p-4 mb-5">
+    <h2 class="fw-bold mb-3" style="text-align: center;">¡Bienvenido a GGSTORE!</h2>
+    <p style="text-align: center;">
+        Somos tu tienda gamer de confianza en Perú. Aquí encontrarás sillas, teclados, mouse, audífonos y todo lo que necesitas para llevar tu experiencia de juego y trabajo al siguiente nivel. ¡Compra seguro, rápido y con garantía!
+    </p>
 </div>
+<!-- FIN Descripción  -->
+<div id="mainCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="~/img/ar_gamer1.jpg" class="d-block w-100 rounded-ntperu shadow" alt="Setup gamer 1" style="height: 400px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="~/img/ar_gamer2.jpg" class="d-block w-100 rounded-ntperu shadow" alt="Setup gamer 2" style="height: 400px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="~/img/ar_gamer3.jpg" class="d-block w-100 rounded-ntperu shadow" alt="Setup gamer 3" style="height: 400px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="~/img/ar_gamer4.jpg" class="d-block w-100 rounded-ntperu shadow" alt="Setup gamer 4" style="height: 400px; object-fit: cover;">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+<!-- FIN Carrusel  -->
+    <!-- Redes sociales flotantes -->
+    <div class="social-float">
+        <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" title="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" title="Tiktok"><i class="bi bi-tiktok"></i></a>
+        <a href="#" title="Youtube"><i class="bi bi-youtube"></i></a>
+        <a href="#" class="whatsapp" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        <a href="#" class="messenger" title="Messenger"><i class="bi bi-messenger"></i></a>
+    </div>
+    <!-- FIN de Redes sociales flotantes -->
+  <!-- Descripción de Categorías -->
+<div class="row mb-5">
+    <div class="col-md-6">
+        <div class="bg-white rounded-ntperu shadow p-4 h-100">
+            <h4 class="fw-bold text-primary mb-2"><i class="bi bi-display"></i> Monitores</h4>
+            <p>
+                Descubre nuestra selección de monitores gamer con alta tasa de refresco, baja latencia y la mejor calidad de imagen para que disfrutes tus juegos y trabajo al máximo.
+            </p>
+            <img src="~/img/monitorgamer_1.jpg" class="d-block w-100 rounded-ntperu shadow" alt="Setup gamer 3" style="height: 400px; object-fit: cover;">
+            <br>
+            <a style="text-align: center;" class="btn btn-primary" asp-controller="Productos" asp-action="Index">Ir a Catálogo</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="bg-white rounded-ntperu shadow p-4 h-100">
+            <h4 class="fw-bold text-primary mb-2"><i class="bi bi-controller"></i> Sillas Gamer</h4>
+            <p>
+                Encuentra sillas ergonómicas y resistentes, diseñadas para largas sesiones de juego o estudio, con estilo gamer y materiales premium.
+            </p>
+            <br>
+            <img src="~/img/sillagamer_1.jpg" class="d-block w-100 rounded-ntperu shadow" alt="Setup gamer 3" style="height: 400px; object-fit: cover;">
+            <br>
+            <a class="btn btn-primary" asp-controller="Productos" asp-action="Index">Ir a Catálogo</a>
+        </div>
+    </div>
+</div>
+<!-- FAQ -->
+<div class="bg-white rounded-ntperu shadow p-4 mb-5">
+    <h3 class="fw-bold mb-3">Preguntas Frecuentes</h3>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="faq1">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1">
+                    ¿Cuánto tarda el envío?
+                </button>
+            </h2>
+            <div id="faqCollapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Los envíos en Lima demoran entre 24 y 48 horas. Para provincias, de 2 a 5 días hábiles.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="faq2">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2">
+                    ¿Tienen garantía los productos?
+                </button>
+            </h2>
+            <div id="faqCollapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Sí, todos nuestros productos cuentan con garantía oficial del fabricante.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="faq3">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3">
+                    ¿Puedo pagar con tarjeta o PayPal?
+                </button>
+            </h2>
+            <div id="faqCollapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Aceptamos pagos con tarjeta de crédito, débito y PayPal.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN FAQ -->
+
