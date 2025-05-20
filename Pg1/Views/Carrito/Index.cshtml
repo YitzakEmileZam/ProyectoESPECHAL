@@ -39,6 +39,7 @@
                     <td>@string.Format(new CultureInfo("es-PE"), "S/{0:N2}", item.Subtotal)</td>
                     <td>
                         <form asp-action="RemoverDelCarrito" method="post">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="idProducto" value="@item.Producto.IdProducto" />
                             <button type="submit" class="btn btn-sm btn-danger">
                                 <i class="bi bi-trash"></i> Eliminar
@@ -62,6 +63,7 @@
         </a>
         <div>
             <form asp-action="VaciarCarrito" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
                 <button type="submit" class="btn btn-outline-danger me-2">
                     <i class="bi bi-cart-x"></i> Vaciar carrito
                 </button>
