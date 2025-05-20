@@ -59,6 +59,40 @@ namespace Pg1.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [HttpPost]
+        public IActionResult ActualizarCantidad(int idProducto, int cantidad)
+        {
+            var producto = _context.Productos.Find(idProducto);
+            if (producto == null)
+            {
+                _logger.LogWarning($"Producto con ID {idProducto} no encontrado.");
+                return NotFound();
+            }
+
+            var carrito = GetCarrito();
+            var item = carrito.Items.FirstOrDefault(i => i.Producto.IdProducto == idProducto);
+
+            if (item != null)
+            {
+                if (cantidad <= 0)
+                {
+                    carrito.Items.Remove(item);
+                }
+                else if (cantidad <= producto.Stock) // Verificar stock disponible
+                {
+                    item.Cantidad = cantidad;
+                }
+                else
+                {
+                    TempData["ErrorStock"] = $"No hay suficiente stock. Disponible: {producto.Stock}";
+                }
+            }
+
+            SaveCarrito(carrito);
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         public IActionResult RemoverDelCarrito(int idProducto)
         {
@@ -69,10 +103,26 @@ namespace Pg1.Controllers
             {
                 carrito.Items.Remove(item);
                 SaveCarrito(carrito);
+                TempData["SuccessMessage"] = "Producto eliminado del carrito";
             }
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Importante para seguridad
+        public IActionResult VaciarCarrito()
+        {
+            // Elimina el carrito de la sesión
+            HttpContext.Session.Remove(SessionKeyName);
+            
+            // Opcional: Mensaje de confirmación
+            TempData["Mensaje"] = "El carrito se ha vaciado correctamente";
+            
+            // Redirige de vuelta al índice del carrito
+            return RedirectToAction("Index");
+        }
+
 
         [HttpGet]
         public IActionResult Checkout()

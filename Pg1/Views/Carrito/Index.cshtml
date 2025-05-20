@@ -1,3 +1,4 @@
+@using System.Globalization
 @model Pg1.Models.Carrito
 
 @{
@@ -15,6 +16,7 @@
                 <th>Cantidad</th>
                 <th>Precio Unitario</th>
                 <th>Subtotal</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -22,9 +24,28 @@
             {
                 <tr>
                     <td>@item.Producto.Nombre</td>
-                    <td>@item.Cantidad</td>
-                    <td>@item.PrecioUnitario.ToString("C")</td>
-                    <td>@item.Subtotal.ToString("C")</td>
+                    <td>
+                        <form asp-action="ActualizarCantidad" method="post" class="d-inline">
+                            <input type="hidden" name="idProducto" value="@item.Producto.IdProducto" />
+                            <input type="number" name="cantidad" value="@item.Cantidad" min="1" max="@item.Producto.Stock" class="form-control" style="width: 80px; display: inline-block;" />
+                            <button type="submit" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                        </form>
+                    </td>
+                    @* <td>@item.PrecioUnitario.ToString("C")</td>
+                    <td>@item.Subtotal.ToString("C")</td> *@
+                    <td>@string.Format(new CultureInfo("es-PE"), "S/{0:N2}", item.PrecioUnitario)</td>
+                    <td>@string.Format(new CultureInfo("es-PE"), "S/{0:N2}", item.Subtotal)</td>
+                    <td>
+                        <form asp-action="RemoverDelCarrito" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="idProducto" value="@item.Producto.IdProducto" />
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -36,9 +57,21 @@
         </tfoot>
     </table>
 
-    <div class="text-end">
-        <a asp-controller="Productos" asp-action="Index" class="btn btn-secondary">Seguir comprando</a>
-        <a asp-action="Checkout" class="btn btn-primary">Ver resumen de compra</a>
+    <div class="d-flex justify-content-between">
+        <a asp-controller="Productos" asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Seguir comprando
+        </a>
+        <div>
+            <form asp-action="VaciarCarrito" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-danger me-2">
+                    <i class="bi bi-cart-x"></i> Vaciar carrito
+                </button>
+            </form>
+            <a asp-action="Checkout" class="btn btn-primary">
+                <i class="bi bi-credit-card"></i> Proceder al pago
+            </a>
+        </div>
     </div>
 }
 else
