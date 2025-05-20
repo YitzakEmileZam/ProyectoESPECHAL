@@ -2,12 +2,13 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
-# Copiar los archivos del proyecto y restaurar dependencias
-COPY *.csproj ./
+# Copiar el archivo del proyecto y restaurar dependencias
+COPY Pg1/Pg1.csproj ./Pg1/
+WORKDIR /app/Pg1
 RUN dotnet restore
 
 # Copiar el resto de los archivos y compilar la aplicación
-COPY . ./
+COPY Pg1/. ./
 RUN dotnet publish -c Release -o out
 
 # Etapa 2: Imagen final
@@ -15,7 +16,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 
 # Copiar los archivos publicados desde la etapa de construcción
-COPY --from=build-env /app/out .
+COPY --from=build-env /app/Pg1/out .
 
 # Configurar variables de entorno necesarias para Render
 ENV ASPNETCORE_URLS=http://+:8080
