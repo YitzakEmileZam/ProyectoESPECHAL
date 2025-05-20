@@ -103,10 +103,26 @@ namespace Pg1.Controllers
             {
                 carrito.Items.Remove(item);
                 SaveCarrito(carrito);
+                TempData["SuccessMessage"] = "Producto eliminado del carrito";
             }
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Importante para seguridad
+        public IActionResult VaciarCarrito()
+        {
+            // Elimina el carrito de la sesión
+            HttpContext.Session.Remove(SessionKeyName);
+            
+            // Opcional: Mensaje de confirmación
+            TempData["Mensaje"] = "El carrito se ha vaciado correctamente";
+            
+            // Redirige de vuelta al índice del carrito
+            return RedirectToAction("Index");
+        }
+
 
         [HttpGet]
         public IActionResult Checkout()
